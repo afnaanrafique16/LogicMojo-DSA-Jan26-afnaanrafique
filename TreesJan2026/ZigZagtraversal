@@ -1,0 +1,77 @@
+package src.TreesJan2026;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+public class ZigZagtraversal {
+    public static class Node {
+        int data;
+        Node left;
+        Node right;
+
+        Node (int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+    public static void main(String[] args) {
+        Node node = new Node(1);
+        node.left = new Node(2);
+        node.right = new Node(3);
+        node.left.left = new Node(4);
+        node.left.right = new Node(5);
+        node.right.left = new Node(6);
+        node.right.right = new Node(7);
+
+        List<List<Integer>> ansZigZagTraversal = zigZagTraversal(node);
+        System.out.println(ansZigZagTraversal);
+    }
+
+    public static List<List<Integer>> zigZagTraversal(Node node) {
+        List<List<Integer>> globalList = new ArrayList<>();
+        if (node == null) {
+            return globalList;
+        }
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(node);
+        boolean flag = true;
+        // true => L-R
+        // false => R-L
+
+        while (!queue.isEmpty()) {
+            int queueSize = queue.size();
+            LinkedList<Integer> list = new LinkedList<>();
+
+            for (int i=0; i<queueSize; i++) {
+                Node removedNode = queue.poll();
+
+                if (removedNode.left != null) {
+                    queue.add(removedNode.left);
+                }
+
+                if (removedNode.right != null) {
+                    queue.add(removedNode.right);
+                }
+
+                if (flag) {
+                    // flag => true
+                    // L-R
+                    //addtolast
+                    list.addLast(removedNode.data);
+                } else {
+                    list.addFirst(removedNode.data);
+                }
+            }
+            flag = !flag;
+
+            globalList.add(list);
+        }
+
+        return globalList;
+    }
+}
