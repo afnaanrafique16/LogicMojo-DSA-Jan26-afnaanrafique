@@ -1,0 +1,66 @@
+package src.TreesJan2026;
+
+public class Q3CountNumberOfLeavesAndNonLeaves {
+    public static class Node {
+        int data;
+        Node left;
+        Node right;
+
+        Node (int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+    public static void main(String[] args) {
+        Node node = new Node(1);
+        node.left = new Node(2);
+        node.right = new Node(3);
+        node.left.left = new Node(4);
+        node.left.right = new Node(5);
+        node.right.left = new Node(6);
+        node.right.right = new Node(7);
+
+        int ansCountOfLeaves = countLeaves(node);
+        System.out.println("Leaves : " +ansCountOfLeaves);
+
+        int ansCountOfNonLeaves = countNonLeaves(node);
+        System.out.println("Non leaves : " +ansCountOfNonLeaves);
+    }
+
+    public static int countLeaves(Node node) {
+        if (node == null) {
+            return 0;
+        }
+
+        // if only one node => 1 leaf
+        if (node.left == null && node.right == null) {
+            return 1;
+        }
+
+        int l = countLeaves(node.left);
+        int r = countLeaves(node.right);
+        int ans = l + r;
+
+        return ans;
+    }
+
+    public static int countNonLeaves(Node node) {
+        if (node == null) {
+            return 0;
+        }
+
+        // if there is only one node => that is a leaf, hence should be not considered as non-leaf
+        // so returning 0
+        if (node.left == null && node.right == null) {
+            return 0;
+        }
+
+        int l = countNonLeaves(node.left);
+        int r = countNonLeaves(node.right);
+        int ans = 1 + l + r;
+
+        return ans;
+    }
+}
